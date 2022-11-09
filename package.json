@@ -1,0 +1,16 @@
+{
+  "name": "soundclouddesktop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "dependencies": {
+    "custom-electron-titlebar": "^4.1.2",
+    "darkreader": "^4.9.58",
+    "electron": "^21.2.2"
+  },
+  "scripts": {
+    "start": "electron src/app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

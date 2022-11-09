@@ -1,2 +1,2 @@
-# SoundCloud-Desktop
+# SoundCloud Desktop
 Desktop SoundCloud application on Electron
