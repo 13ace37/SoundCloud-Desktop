@@ -6,6 +6,7 @@
   "dependencies": {
     "custom-electron-titlebar": "^4.1.2",
     "darkreader": "^4.9.58",
+    "discord-rpc": "^4.0.3",
     "electron": "^21.2.2"
   },
   "scripts": {

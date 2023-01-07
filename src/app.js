@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main');
 
@@ -10,6 +10,7 @@ app.once('ready', () => {
         width: 1280,
         height: 720,
         show: false,
+        title: "SoundCloud Desktop",
         icon: path.join(__dirname + './assets/logo.png'),
         autoHideMenuBar: true,
         titleBarStyle: 'hidden',
