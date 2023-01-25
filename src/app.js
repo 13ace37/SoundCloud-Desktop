@@ -13,7 +13,6 @@ app.once("ready", async () => {
 		width: 1280,
 		height: 720,
 		title: "SoundCloud Desktop",
-		icon: path.join(__dirname + "./assets/logo.png"),
 		autoHideMenuBar: true,
 		webPreferences: {
 			nodeIntegration: true,
