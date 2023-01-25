@@ -1,35 +1,58 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
-const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main');
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
-let window = null;
-setupTitlebar();
+const { readFileSync, writeFileSync } = require("fs");
+const fetch = require("cross-fetch");
+const { ElectronBlocker, fullLists, Request } = require("@cliqz/adblocker-electron");
 
-app.once('ready', () => {
-    window = new BrowserWindow({
-        width: 1280,
-        height: 720,
-        show: false,
-        title: "SoundCloud Desktop",
-        icon: path.join(__dirname + './assets/logo.png'),
-        autoHideMenuBar: true,
-        titleBarStyle: 'hidden',
-        webPreferences: {
-            sandbox: false,
-            preload: path.join(__dirname, 'preload.js')
-        }
-    });
+process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = true;
 
-    attachTitlebarToWindow(window);
+app.once("ready", async () => {
 
-    window.loadURL('https://soundcloud.com');
+	app.mainWindow = new BrowserWindow({
+		width: 1280,
+		height: 720,
+		title: "SoundCloud Desktop",
+		icon: path.join(__dirname + "./assets/logo.png"),
+		autoHideMenuBar: true,
+		webPreferences: {
+			nodeIntegration: true,
+			contextIsolation: false,
+			webSecurity: false,
+			preload: path.join(__dirname, "preload.js")
+		}
+	});
 
-    window.once('ready-to-show', () => {
-        window.maximize();
-        window.show();
-    });
+	const blocker = await ElectronBlocker.fromLists(
+		fetch,
+		fullLists,
+		{
+			enableCompression: true,
+		},
+		{
+			path: 'engine.bin',
+			read: async (...args) => readFileSync(...args),
+			write: async (...args) => writeFileSync(...args),
+		},
+	);
+	blocker.enableBlockingInSession(app.mainWindow.webContents.session);
+
+	app.mainWindow.loadURL("https://soundcloud.com");
+
+	app.mainWindow.webContents.on("did-finish-load", () => {
+
+		app.mainWindow.webContents.send("inject-darkreader", {
+			inject: true
+		});
+
+		app.mainWindow.webContents.send("start-discord-rpc", {
+			start: true
+		});
+
+	});
+
 });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
+app.on("window-all-closed", () => {
+	if (process.platform !== "darwin") app.quit()
 });
