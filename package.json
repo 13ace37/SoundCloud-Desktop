@@ -11,11 +11,23 @@
 		"discord-rpc": "^4.0.1"
 	},
 	"scripts": {
-		"start": "electron ."
+		"start": "electron .",
+		"build": "electron-builder --win --publish=never"
 	},
 	"author": "",
 	"license": "MIT",
 	"devDependencies": {
-		"electron": "^22.0.3"
+		"electron": "^22.0.3",
+		"electron-builder": "^23.6.0"
+	},
+	"build": {
+		"appId": "ch.xace.soundclouddesktop",
+		"productName": "SoundCloud Desktop",
+		"win": {
+			"artifactName": "soundclouddesktop-V${version}.${ext}",
+			"target": [
+				"nsis"
+			]
+		}
 	}
 }
